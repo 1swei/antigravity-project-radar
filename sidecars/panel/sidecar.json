@@ -1,0 +1,10 @@
+{
+  "command": "node",
+  "args": [
+    "main.mjs"
+  ],
+  "restart_policy": "always",
+  "display_name": "Antigravity Project Radar",
+  "description": "Background task status monitor and sidebar project badge injector",
+  "has_web_ui": false
+}

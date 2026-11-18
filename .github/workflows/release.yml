@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Extract release notes
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          python3 - <<'PY' "$TAG" > release_notes.md
+          import pathlib, re, subprocess, sys
+          tag = sys.argv[1]
+          text = pathlib.Path('CHANGELOG.md').read_text(encoding='utf-8')
+          m = re.search(rf'^##\s+{re.escape(tag)}[^\n]*\n([\s\S]*?)(?=^##\s+|\Z)', text, re.M)
+          body = m.group(1).strip() if m else ''
+          if not body:
+              body = subprocess.check_output(['git', 'log', '-1', '--pretty=%s'], text=True).strip()
+          body = re.sub(r'^---\s*$', '', body, flags=re.M).strip()
+          print(body)
+          PY
+
+      - name: Package release zip and SHA-256
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          ARCHIVE="antigravity-project-radar-${VERSION}.zip"
+          mkdir -p "dist/antigravity-project-radar"
+          cp -r assets compat sidecars plugin.json LICENSE README.md README.en.md CHANGELOG.md CHANGELOG.en.md "dist/antigravity-project-radar/"
+          find "dist/antigravity-project-radar" -name "__pycache__" -type d -exec rm -rf {} +
+          (cd dist && zip -rq "../${ARCHIVE}" antigravity-project-radar)
+          sha256sum "${ARCHIVE}" > "${ARCHIVE}.sha256"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release_notes.md
+          files: |
+            antigravity-project-radar-*.zip
+            antigravity-project-radar-*.zip.sha256

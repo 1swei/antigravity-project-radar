@@ -1,0 +1,20 @@
+{
+  "name": "antigravity-project-radar",
+  "displayName": "Antigravity Project Radar",
+  "display_name": "Antigravity Project Radar",
+  "description": "Live running, attention, and unread-completed task indicators at the right edge of collapsed Projects in the Antigravity sidebar, with a global summary pill and zero-reload jump popovers.",
+  "version": "1.0.3",
+  "logo": "assets/logo.svg",
+  "author": {
+    "name": "1swei",
+    "url": "https://github.com/1swei"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/1swei/antigravity-project-radar",
+  "homepage": "https://github.com/1swei/antigravity-project-radar",
+  "suggestedPrompts": [
+    "Show which projects currently have running or newly completed tasks",
+    "Explain how Antigravity Project Radar tracks task transitions",
+    "Check Antigravity Project Radar sidecar connection health"
+  ]
+}
