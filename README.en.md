@@ -8,7 +8,7 @@
 
 A lightweight standalone plugin for Antigravity 2.0 that surfaces live parallel task status (**running / waiting / unread completed**) directly on collapsed **Projects** rows, with a global summary pill and hover-to-jump popovers.
 
-[MIT License](LICENSE) · Version `v1.0.3` · [Changelog](CHANGELOG.en.md)
+[MIT License](LICENSE) · Version `v1.0.4` · [Changelog](CHANGELOG.en.md)
 
 </div>
 

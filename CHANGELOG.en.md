@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.4 (2026-11-18)
+
+- **Frameless Transparent-Canvas Logo**: Redesigned [logo.svg](assets/logo.svg) without the dark rounded-square tile into a borderless cobalt radar dish with a bright cyan sweep arc, amber attention beacon, and emerald checkmark badge separated by a true transparent `<mask>` cutout for crisp contrast on both Light and Dark themes.
+
 ## v1.0.3 (2026-11-18)
 
 - **Initial public release**: Surfaces live parallel task indicators (**running / waiting / error / unread completed**) directly at the far right of collapsed **Projects** rows in Antigravity 2.0.

@@ -3,7 +3,7 @@
   "displayName": "Antigravity Project Radar",
   "display_name": "Antigravity Project Radar",
   "description": "Live running, attention, and unread-completed task indicators at the right edge of collapsed Projects in the Antigravity sidebar, with a global summary pill and zero-reload jump popovers.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "logo": "assets/logo.svg",
   "author": {
     "name": "1swei",
