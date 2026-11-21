@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.5 (2026-11-21)
+
+- **Support Host-Injected Credentials in Antigravity `2.34.0+`**: Added and exported `serverFromEnv()` and `serverFromDiscovery()` in [client.mjs](sidecars/panel/client.mjs) to consume `ANTIGRAVITY_LS_ADDRESS` and the scoped `ANTIGRAVITY_CSRF_TOKEN` injected by the host when `language_server` omits `--csrf_token` from its CLI args; enforces strict loopback HTTP (`127.0.0.1` / `localhost` / `[::1]`) and token validation, preserves legacy `--csrf_token` discovery, prevents cross-generation port mismatches, and disambiguates multiple instances.
+- **Sidecar Keep-Alive & Diagnostics Without CDP**: Enabled `integration.start({ keepAlive: true })` in [main.mjs](sidecars/panel/main.mjs) so the sidecar stays alive when Antigravity `2.33.0+` launches without `--remote-debugging-port=0` instead of cycling every 60s; added `cdp-port-missing` health reporting in [runtime-ui.mjs](compat/runtime-ui.mjs).
+
 ## v1.0.4 (2026-11-18)
 
 - **Frameless Transparent-Canvas Logo**: Redesigned [logo.svg](assets/logo.svg) without the dark rounded-square tile into a borderless cobalt radar dish with a bright cyan sweep arc, amber attention beacon, and emerald checkmark badge separated by a true transparent `<mask>` cutout for crisp contrast on both Light and Dark themes.

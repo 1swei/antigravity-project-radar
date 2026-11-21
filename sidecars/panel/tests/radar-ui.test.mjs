@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { makeRendererSource, validatedRadarInput, validatedMarkReadInput } from '../../../compat/runtime-ui.mjs';
+import { makeRendererSource, validatedRadarInput, validatedMarkReadInput, RuntimeUi } from '../../../compat/runtime-ui.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..', '..');
@@ -33,4 +33,26 @@ test('input validators sanitize conversation IDs and flags', () => {
     conversationIds: [id.toLowerCase()],
     all: false,
   });
+});
+
+test('sidecar manifest stays headless without auxiliary web UI', () => {
+  const manifest = JSON.parse(readFileSync(join(ROOT, 'sidecars', 'panel', 'sidecar.json'), 'utf8'));
+  assert.equal(manifest.has_web_ui, false);
+  assert.equal(manifest.ui_config, undefined);
+});
+
+test('RuntimeUi distinguishes missing DevToolsActivePort while staying in reconnecting state', async () => {
+  const ui = new RuntimeUi({
+    snapshot: async () => ({ connection: 'live', items: [], totals: {} }),
+    source: 'safe-widget',
+    discover: async () => {
+      const err = new Error('ENOENT: no such file or directory');
+      err.code = 'ENOENT';
+      throw err;
+    },
+  });
+  await ui.tick();
+  assert.equal(ui.health.state, 'reconnecting');
+  assert.equal(ui.health.code, 'cdp-port-missing');
+  await ui.stop();
 });

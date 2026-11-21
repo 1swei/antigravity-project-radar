@@ -74,7 +74,7 @@ const integration = new RuntimeUi({
 if (isHostSidecar) {
   if (!await ownership.claim()) process.exit(0);
   store.startPolling(1800);
-  integration.start();
+  integration.start({ keepAlive: true });
   const shutdown = async () => {
     const exitTimer = setTimeout(() => process.exit(0), 2000);
     exitTimer.unref?.();

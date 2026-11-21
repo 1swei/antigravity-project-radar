@@ -8,7 +8,7 @@
 
 轻量、无感融合的 Antigravity 独立插件：在左侧 `Projects` 列表折叠状态下，直接于行尾展示各项目的并行任务实时状态（运行中 / 待确认 / 未读刚完成），配合顶部跨项目汇总胶囊与悬停直达浮层，告别频繁展开目录找任务。
 
-[MIT License](LICENSE) · 版本 `v1.0.4` · [更新日志](CHANGELOG.md)
+[MIT License](LICENSE) · 版本 `v1.0.5` · [更新日志](CHANGELOG.md)
 
 </div>
 

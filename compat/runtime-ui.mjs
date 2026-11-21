@@ -257,8 +257,8 @@ export class RuntimeUi {
     this.health = { state: 'waiting', mode: 'runtime', message: 'Waiting for the app renderer', windows: 0 };
   }
 
-  async setHealth(state, message) {
-    this.health = { state, mode: 'runtime', message, windows: this.sessions.size, checkedAt: new Date().toISOString() };
+  async setHealth(state, message, extra = {}) {
+    this.health = { state, mode: 'runtime', message, windows: this.sessions.size, checkedAt: new Date().toISOString(), ...extra };
     if (this.dataDir && await this.owns()) {
       try {
         await mkdir(this.dataDir, { recursive: true });
@@ -451,8 +451,15 @@ export class RuntimeUi {
         mounted ? 'mounted' : this.sessions.size ? 'waiting-for-sidebar' : 'waiting',
         mounted ? 'Radar attached to Antigravity sidebar' : this.sessions.size ? 'Renderer connected; waiting for sidebar' : 'Waiting for app renderer',
       );
-    } catch {
-      await this.setHealth('reconnecting', 'Renderer connection unavailable; retrying automatically.');
+    } catch (error) {
+      const cdpMissing = error?.code === 'ENOENT';
+      await this.setHealth(
+        'reconnecting',
+        cdpMissing
+          ? 'Sidebar badges require Antigravity launched with --remote-debugging-port=0 (DevToolsActivePort not found).'
+          : 'Renderer connection unavailable; retrying automatically.',
+        { code: cdpMissing ? 'cdp-port-missing' : 'connection-unavailable' },
+      );
     } finally {
       this.busy = false;
     }
@@ -477,13 +484,13 @@ export class RuntimeUi {
     this.sessions.clear();
   }
 
-  start() {
+  start({ keepAlive = false } = {}) {
     if (this.running) return;
     this.running = true;
     this.stopping = false;
     void this.tick();
     this.timer = setInterval(() => { void this.tick(); }, this.interval);
-    this.timer.unref?.();
+    if (!keepAlive) this.timer.unref?.();
   }
 
   async stop() {
